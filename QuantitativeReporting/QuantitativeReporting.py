@@ -63,6 +63,8 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
     self.modulePath = os.path.dirname(slicer.util.modulePath(self.moduleName))
     self.delayedAutoUpdateTimer = self.createTimer(500, self.updateMeasurementsTable, singleShot=True)
 
+    self.segment_characteristics = {}
+
   def __del__(self):
     self.delayedAutoUpdateTimer.stop()
 
@@ -153,12 +155,26 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
     self.setupSelectionArea()
     self.setupImportArea()
     self.mainModuleWidgetLayout.addWidget(self.segmentationGroupBox)
+    self.setupSegmentsCharacteristics()
     self.setupMeasurementsArea()
     self.setupActionButtons()
 
     self.setupConnections()
     self.layout.addStretch(1)
     self.fourUpSliceLayoutButton.checked = True
+
+  def setupSegmentsCharacteristics(self):
+    self.characteristicsGroupBox = qt.QGroupBox("Characteristics")
+    self.characteristicsGroupBox.setLayout(qt.QGridLayout())
+
+    label_segment = qt.QLabel('Segment')
+    label_margin = qt.QLabel('Margin')
+    label_contour = qt.QLabel('Contour')
+    self.characteristicsGroupBox.layout().addWidget(label_segment, 0, 0)
+    self.characteristicsGroupBox.layout().addWidget(label_margin, 0, 1)
+    self.characteristicsGroupBox.layout().addWidget(label_contour, 0, 2)
+
+    self.mainModuleWidgetLayout.addWidget(self.characteristicsGroupBox)
 
   def setupTabBarNavigation(self):
     self.tabWidget = qt.QTabWidget()
@@ -399,6 +415,34 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
     selectedRow = self.segmentEditorWidget.getSegmentIndexByID(segmentID)
     self.onSegmentSelected(selectedRow)
 
+    segmentationNodeID = self.tableNode.GetAttribute('ReferencedSegmentationNodeID')
+    segmentationNode = slicer.mrmlScene.GetNodeByID(segmentationNodeID)
+    segmentation = segmentationNode.GetSegmentation()
+    segment = segmentation.GetSegment(segmentID)
+
+    if segmentID not in self.segment_characteristics:
+
+      characteristic_margin = qt.QComboBox()
+      characteristic_margin.addItems(['NA', 'poorly defined', 'well defined'])
+
+      characteristic_contour = qt.QComboBox()
+      characteristic_contour.addItems(['NA', 'oval-bound', 'lobulation', 'spiculation'])
+
+      segment_label = qt.QLabel(segment.GetName())
+
+      self.characteristicsGroupBox.layout().addWidget(segment_label, len(self.segment_characteristics) + 1, 0)
+      self.characteristicsGroupBox.layout().addWidget(characteristic_margin, len(self.segment_characteristics) + 1, 1)
+      self.characteristicsGroupBox.layout().addWidget(characteristic_contour, len(self.segment_characteristics) + 1, 2)
+
+      self.segment_characteristics[segmentID] = {
+        'margin': characteristic_margin,
+        'contour': characteristic_contour,
+        'label': segment_label,
+      }
+
+    elif self.segment_characteristics[segmentID]['label'].text != segment.GetName():
+      self.segment_characteristics[segmentID]['label'].setText(segment.GetName())
+
   def onSegmentSelectionChanged(self, itemSelection):
     selectedRow = itemSelection.indexes()[0].row() if len(itemSelection.indexes()) else None
     if selectedRow is not None:
@@ -410,6 +454,8 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
     self.selectRowIfNotSelected(self.tableView, index)
     self.selectRowIfNotSelected(self.fourUpTableView, index)
     self.segmentEditorWidget.onSegmentSelected(index)
+
+    self.segment_characteristics
 
   def selectRowIfNotSelected(self, tableView, selectedRow):
     if tableView:
