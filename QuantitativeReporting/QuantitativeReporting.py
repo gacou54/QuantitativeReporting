@@ -27,74 +27,6 @@ from SlicerDevelopmentToolboxUtils.widgets import CopySegmentBetweenSegmentation
 from SlicerDevelopmentToolboxUtils.widgets import DICOMBasedInformationWatchBox, ImportLabelMapIntoSegmentationWidget
 from slicer.ScriptedLoadableModule import *
 
-CHARACTERISTICS_CONFIG = [
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '101', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
-            'CodeMeaning': 'Nodule with complete, central, popcorn, or concentric ring calcifications'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '102', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
-            'CodeMeaning': 'Fat-containing nodule'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '103', 'CodingSchemeDesignator': 'ParadimLungScreening2024', 'CodeMeaning': 'Part solid nodule'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '104', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
-            'CodeMeaning': 'Juxtapleural nodule with smooth margins; and oval, lentiform, or triangular shape'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '105', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
-            'CodeMeaning': 'Airway nodule: Subsegmental'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-    {
-        'ConceptNameCodeSequence': {
-            'CodeValue': '106', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
-            'CodeMeaning': 'Airway nodule: Segmental or more proximal'
-        },
-        'choices': [
-            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
-            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
-        ]
-    },
-]
-
 
 class QuantitativeReporting(ScriptedLoadableModule):
     """Uses ScriptedLoadableModule base class, available at:
@@ -128,6 +60,11 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
         self.slicerTempDir = slicer.util.tempDirectory()
         slicer.mrmlScene.AddObserver(slicer.mrmlScene.EndCloseEvent, self.onSceneClosed)
         self.modulePath = os.path.dirname(slicer.util.modulePath(self.moduleName))
+
+        characteristics_config_path = os.path.join(self.modulePath, 'Resources', 'Configuration', 'characteristics.json')
+        with open(characteristics_config_path) as file:
+            self.characteristics_config = json.load(file)
+
         self.delayedAutoUpdateTimer = self.createTimer(
             500,
             self.updateMeasurementsTableAndSegmentationCharacteristics,
@@ -485,7 +422,7 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
         qt.QTimer.singleShot(0, lambda: dockWidget.setSizePolicy(tempPolicy))
 
     def open_characteristic_window(self, segment_index):
-        dialog = CharacteristicsWindow(self.segment_characteristics[segment_index])
+        dialog = CharacteristicsWindow(self.segment_characteristics[segment_index], self.characteristics_config)
         dialog.exec()
 
     def onSegmentSelectionChanged(self, itemSelection):
@@ -862,7 +799,7 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
         # Each dataset correspond to a segment.
         for dataset, key in zip(sr_ds.ContentSequence[5].ContentSequence, sorted_segment_characteristics_keys):
             for concept_name, choice_label in self.segment_characteristics[key].items():
-                characteristics = _find_characteristics_from_concept_name_and_choice(concept_name, choice_label)
+                characteristics = _find_characteristics_from_concept_name_and_choice(concept_name, choice_label, self.characteristics_config)
                 if characteristics is None:
                     continue
 
@@ -962,7 +899,7 @@ class QuantitativeReportingSlicelet(qt.QWidget, ModuleWidgetMixin):
 
 
 class CharacteristicsWindow(qt.QDialog):
-    def __init__(self, segment_characteristics):
+    def __init__(self, segment_characteristics, characteristics_config):
         """segment_characteristics is a dict of the specific segment's characteristics
         {'characteristics_name': 'choice_value'}
         """
@@ -976,7 +913,7 @@ class CharacteristicsWindow(qt.QDialog):
         self.characteristic_widgets = {}
         self.segment_characteristics = segment_characteristics
 
-        for i, characteristic in enumerate(CHARACTERISTICS_CONFIG):
+        for i, characteristic in enumerate(characteristics_config):
             char_name = characteristic['ConceptNameCodeSequence']['CodeMeaning']
             characteristic_widget = qt.QComboBox()
             for choice in characteristic['choices']:
@@ -1007,11 +944,11 @@ class CharacteristicsWindow(qt.QDialog):
         self.accept()
 
 
-def _find_characteristics_from_concept_name_and_choice(concept_name, choice_label):
+def _find_characteristics_from_concept_name_and_choice(concept_name, choice_label, characteristics_config):
     if choice_label == 'N/A':
         return None  # If nothing have been selected, ignore
 
-    for i in CHARACTERISTICS_CONFIG:
+    for i in characteristics_config:
         if i['ConceptNameCodeSequence']['CodeMeaning'] == concept_name:
             for j in i['choices']:
                 if j['CodeMeaning'] == choice_label:
