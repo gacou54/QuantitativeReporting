@@ -30,71 +30,67 @@ from slicer.ScriptedLoadableModule import *
 CHARACTERISTICS_CONFIG = [
     {
         'ConceptNameCodeSequence': {
-            'CodeValue': 'C3672', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Calcification'
+            'CodeValue': '101', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
+            'CodeMeaning': 'Nodule with complete, central, popcorn, or concentric ring calcifications'
         },
         'choices': [
-            # 'ConceptCodeSequence'
             {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID28473', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'Absent'},
-            {'CodeValue': 'RID35453', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'popcorn calcification sign'},
-            {'CodeValue': 'RID5741', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'Solid appearance'},
-            {'CodeValue': 'RID5827', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'Central calcification'},
-            {'CodeValue': '302', 'CodingSchemeDesignator': '99LIDCQIICR', 'CodeMeaning': 'Laminated appearance'},
-            {'CodeValue': '304', 'CodingSchemeDesignator': '99LIDCQIICR', 'CodeMeaning': 'Non-central appearance'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
         ]
     },
     {
         'ConceptNameCodeSequence': {
-            'CodeValue': 'C41144', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Texture'
+            'CodeValue': '102', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
+            'CodeMeaning': 'Fat-containing nodule'
         },
         'choices': [
-            # 'ConceptCodeSequence'
             {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID50153', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'Non-solid pulmonary nodule'},
-            {'CodeValue': 'RID50152', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'part-solid pulmonary nodule'},
-            {'CodeValue': 'RID50151', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'solid pulmonary nodule'},
-            # {'CodeValue': '002', 'CodingSchemeDesignator': '99LIDCQIICR', 'CodeMeaning': '2 out of 5'},
-            # {'CodeValue': '004', 'CodingSchemeDesignator': '99LIDCQIICR', 'CodeMeaning': '4 out of 5'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
         ]
     },
     {
         'ConceptNameCodeSequence': {
-            'CodeValue': '200', 'CodingSchemeDesignator': '99LIDCQIICR', 'CodeMeaning': 'Internal structure'
+            'CodeValue': '103', 'CodingSchemeDesignator': 'ParadimLungScreening2024', 'CodeMeaning': 'Part solid nodule'
         },
         'choices': [
-            # 'ConceptCodeSequence'
             {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'C12471', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Soft tissue'},
-            {'CodeValue': 'C25278', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Fluid'},
-            {'CodeValue': 'C12472', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Adipose tissue'},
-            {'CodeValue': 'C73434', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Air'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
         ]
     },
     {
         'ConceptNameCodeSequence': {
-            'CodeValue': 'C25563', 'CodingSchemeDesignator': 'NCIt', 'CodeMeaning': 'Margin'
+            'CodeValue': '104', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
+            'CodeMeaning': 'Juxtapleural nodule with smooth margins; and oval, lentiform, or triangular shape'
         },
         'choices': [
-            # 'ConceptCodeSequence'
             {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID5709', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'indistinct margin'},
-            {'CodeValue': 'RID5711', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'lobulated margin'},
-            {'CodeValue': 'RID5713', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'spiculated margin'},
-            {'CodeValue': 'RID45664', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'intermediate margin'},
-            {'CodeValue': 'RID5707', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'circumscribed margin'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
         ]
     },
     {
         'ConceptNameCodeSequence': {
-            'CodeValue': 'QCFX', 'CodingSchemeDesignator': 'IBSI', 'CodeMeaning': 'Spericity'
+            'CodeValue': '105', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
+            'CodeMeaning': 'Airway nodule: Subsegmental'
         },
         'choices': [
-            # 'ConceptCodeSequence'
             {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
-            {'CodeValue': 'RID5811', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'linear'},
-            {'CodeValue': 'RID5800', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'oval'},
-            {'CodeValue': 'RID5799', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'round'},
-            {'CodeValue': 'RID34291', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'polygonal'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
+        ]
+    },
+    {
+        'ConceptNameCodeSequence': {
+            'CodeValue': '106', 'CodingSchemeDesignator': 'ParadimLungScreening2024',
+            'CodeMeaning': 'Airway nodule: Segmental or more proximal'
+        },
+        'choices': [
+            {'CodeValue': '', 'CodingSchemeDesignator': '', 'CodeMeaning': 'N/A'},
+            {'CodeValue': 'RID28474', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'yes'},
+            {'CodeValue': ' RID28475', 'CodingSchemeDesignator': 'RadLex', 'CodeMeaning': 'no'},
         ]
     },
 ]
@@ -756,6 +752,7 @@ class QuantitativeReportingWidget(ModuleWidgetMixin, ScriptedLoadableModuleWidge
             slicer.util.warningDisplay(err)
 
     def saveReport(self, completed=False):
+
         self._metadata = self.retrieveMetaDataFromUser()
         if not self._metadata:
             return False, "Saving process canceled. Meta-information was not confirmed by user."
