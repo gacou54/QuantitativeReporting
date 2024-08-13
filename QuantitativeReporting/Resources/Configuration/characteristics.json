@@ -1,0 +1,146 @@
+[
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "101",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Nodule with complete, central, popcorn, or concentric ring calcifications"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  },
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "102",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Fat-containing nodule"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  },
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "103",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Part solid nodule"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  },
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "104",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Juxtapleural nodule with smooth margins; and oval, lentiform, or triangular shape"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  },
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "105",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Airway nodule: Subsegmental"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  },
+  {
+    "ConceptNameCodeSequence": {
+      "CodeValue": "106",
+      "CodingSchemeDesignator": "ParadimLungScreening2024",
+      "CodeMeaning": "Airway nodule: Segmental or more proximal"
+    },
+    "choices": [
+      {
+        "CodeValue": "",
+        "CodingSchemeDesignator": "",
+        "CodeMeaning": "N/A"
+      },
+      {
+        "CodeValue": "RID28474",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "yes"
+      },
+      {
+        "CodeValue": " RID28475",
+        "CodingSchemeDesignator": "RadLex",
+        "CodeMeaning": "no"
+      }
+    ]
+  }
+]
