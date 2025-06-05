@@ -138,8 +138,13 @@ class DICOMSegmentationPluginClass(DICOMPluginBase):
       categoryContextName = "Segmentation category and type - DICOM master list"
 
     anatomicContextName = loadable.name
-    if not terminologiesLogic.LoadAnatomicContextFromSegmentDescriptorFile(anatomicContextName, metaFileName):
-      anatomicContextName = "Anatomic codes - DICOM master list"
+    try:
+      if not terminologiesLogic.LoadRegionContextFromSegmentDescriptorFile(anatomicContextName, metaFileName):
+        anatomicContextName = "Anatomic codes - DICOM master list"
+    except AttributeError:
+      # backward compatibility with Slicer 5.8.1
+      if not terminologiesLogic.LoadAnatomicContextFromSegmentDescriptorFile(anatomicContextName, metaFileName):
+        anatomicContextName = "Anatomic codes - DICOM master list"
 
     with open(metaFileName) as metaFile:
       data = json.load(metaFile)
@@ -291,7 +296,7 @@ class DICOMSegmentationPluginClass(DICOMPluginBase):
 
     vtkSegConverter = vtkSegmentationCore.vtkSegmentationConverter
     segmentation = vtkSegmentationCore.vtkSegmentation()
-    segmentation.SetMasterRepresentationName(vtkSegConverter.GetSegmentationBinaryLabelmapRepresentationName())
+    segmentation.SetSourceRepresentationName(vtkSegConverter.GetSegmentationBinaryLabelmapRepresentationName())
     segmentation.CreateRepresentation(vtkSegConverter.GetSegmentationClosedSurfaceRepresentationName(), True)
     segmentationNode.SetAndObserveSegmentation(segmentation)
 
@@ -679,7 +684,7 @@ class DICOMSegmentationExporter(ModuleLogicMixin):
     rgb = segment.GetColor()
     segmentData["recommendedDisplayRGBValue"] = [rgb[0] * 255, rgb[1] * 255, rgb[2] * 255]
     segmentData.update(self.createJSONFromTerminologyContext(terminologyEntry))
-    segmentData.update(self.createJSONFromAnatomicContext(terminologyEntry))
+    segmentData.update(self.createJSONFromRegionContext(terminologyEntry))
     return segmentData
 
   def checkTerminologyOfSegments(self, segmentIDs):
@@ -715,15 +720,25 @@ class DICOMSegmentationExporter(ModuleLogicMixin):
 
     return segmentData
 
-  def createJSONFromAnatomicContext(self, terminologyEntry):
+  def createJSONFromRegionContext(self, terminologyEntry):
     segmentData = dict()
 
-    regionObject = terminologyEntry.GetAnatomicRegionObject()
+    try:
+      regionObject = terminologyEntry.GetRegionObject()
+    except AttributeError:
+      # backward compatibility with Slicer 5.8.1
+      regionObject = terminologyEntry.GetAnatomicRegionObject()
+
     if regionObject is None or not self.isTerminologyInformationValid(regionObject):
       return {}
     segmentData["AnatomicRegionSequence"] = self.getJSONFromVtkSlicerTerminology(regionObject)
 
-    regionModifierObject = terminologyEntry.GetAnatomicRegionModifierObject()
+    try:
+      regionModifierObject = terminologyEntry.GetRegionModifierObject()
+    except AttributeError:
+      # backward compatibility with Slicer 5.8.1
+      regionModifierObject = terminologyEntry.GetAnatomicRegionModifierObject()
+
     if regionModifierObject is not None and self.isTerminologyInformationValid(regionModifierObject):
       segmentData["AnatomicRegionModifierSequence"] = self.getJSONFromVtkSlicerTerminology(regionModifierObject)
     return segmentData
